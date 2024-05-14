@@ -1,5 +1,14 @@
 # Мини Таск менеджер.
 
+### Docker
+- https://docs.docker.com/desktop/install/linux-install/
+
+- docker build . -t fastapp_app:latest
+- Waiting
+- docker run -p 8000:8000 fastapp_app
+- http://127.0.0.1:8000/docs
+- docker stop fastapp_app 
+
 ### requirements:
 
 - poetry

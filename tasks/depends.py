@@ -1,7 +1,4 @@
-from typing import Type
-
-from storage import JSONStorage, Storage
-from tasks.storage import JSONStorage
+from storage import JSONStorage
 
 
 def get_storage() -> JSONStorage:
