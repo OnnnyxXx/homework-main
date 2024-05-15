@@ -4,29 +4,21 @@ from fastapi import APIRouter, Depends, status, HTTPException
 
 from storage import Storage
 from depends import get_storage
-from service import TaskManager, Task
+# from service import TaskManager, Task
+from repository import TaskRepository
+
+from schemas import STaskAdd, STask
 
 router = APIRouter(prefix='/tasks')
 
 
-@router.get('/', status_code=status.HTTP_200_OK, response_model=List[Task])
-async def tasks(storage: Storage = Depends(get_storage)):
-    """
-    Route to view all tasks
-
-    :param storage: actual storage instance
-    """
-    tasks_data = await storage.read()
-
-    return tasks_data
+@router.get("")
+async def get_tasks() -> list[STask]:
+   tasks = await TaskRepository.get_tasks()
+   return tasks
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
-async def create(task: Task):
-    """
-    Route for create new task in storage and returned her name
-
-    :param task: Task entity
-    :return: task name
-    """
-    return task.title
+@router.post("")
+async def add_task(task: STaskAdd = Depends()):
+   new_task_id = await TaskRepository.add_task(task)
+   return {"id": new_task_id}

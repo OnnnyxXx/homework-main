@@ -41,4 +41,5 @@ class JSONStorage(Storage):
         task_data['id'] = task_id
         tasks.append(task_data)
         await self.save(tasks)
-        return task_id
+        return task_data['title']
+

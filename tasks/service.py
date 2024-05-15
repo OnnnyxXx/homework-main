@@ -7,12 +7,12 @@ from pydantic import BaseModel, PositiveInt, constr
 from storage import Storage
 
 
-class Task(BaseModel):
-    id: PositiveInt
-    title: constr(min_length=1, max_length=100)
-    completed: bool
-    created_at: datetime
-    updated_at: datetime
+# class Task(BaseModel):
+#     id: int
+#     title: constr(min_length=1, max_length=100) | None
+#     completed: bool
+#     created_at: datetime
+#     updated_at: datetime
 
 
 class TaskManager:
