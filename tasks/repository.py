@@ -31,7 +31,7 @@ class TaskRepository:
             session.add(new_task)
             await session.flush()
             await session.commit()
-            return new_task.id
+            return new_task.name  # if not need task.id
 
     @classmethod
     async def get_tasks(cls) -> list[STask]:
