@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from fastapi import APIRouter, Depends, status, HTTPException
 
@@ -16,12 +16,24 @@ router = APIRouter(
 
 
 @router.get("")
-async def get_tasks() -> list[STask]:
+async def get_tasks():
     """
     Get all tasks from the database
     """
-    tasks = await TaskRepository.get_tasks()
-    return tasks
+    try:
+        tasks = await TaskRepository.get_tasks()
+        return {
+            'status': 'success',
+            'data': tasks,
+            'details': None
+        }
+
+    except Exception:
+        raise HTTPException(status_code=400, detail={
+            "status": 'not tasks',
+            'data': None,
+            'details': None,
+        })
 
 
 @router.post("")
@@ -30,6 +42,15 @@ async def add_task(task: STaskAdd = Depends()):
     Saving tasks
     :return tasks.id
     """
-
-    new_task_id = await TaskRepository.add_task(task)
-    return {"name": new_task_id}
+    try:
+        new_task_id = await TaskRepository.add_task(task)
+        return {
+            'status': status.HTTP_200_OK,
+            "name": new_task_id,
+        }
+    except Exception:
+        raise HTTPException(status_code=400, detail={
+            "status": 'error fields',
+            'data': None,
+            'details': None,
+        })
