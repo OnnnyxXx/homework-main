@@ -1,13 +1,6 @@
-from typing import List, Dict
-
 from fastapi import APIRouter, Depends, status, HTTPException
-
-from storage import Storage
-from depends import get_storage
-# from service import TaskManager, Task
 from repository import TaskRepository
-
-from schemas import STaskAdd, STask
+from schemas import STaskAdd
 
 router = APIRouter(
     prefix='/tasks',
@@ -36,8 +29,8 @@ async def get_tasks():
         })
 
 
-@router.post("")
-async def add_task(task: STaskAdd = Depends()):
+@router.post("/add/tasks")
+async def add_task(task: STaskAdd):
     """
     Saving tasks
     :return tasks.id
@@ -51,6 +44,27 @@ async def add_task(task: STaskAdd = Depends()):
     except Exception:
         raise HTTPException(status_code=400, detail={
             "status": 'error fields',
+            'data': None,
+            'details': None,
+        })
+
+
+@router.delete("/delete/{tasks_id}")
+async def delete_tasks(tasks_id):
+    """
+    Delete tasks from the database
+    """
+    try:
+        result = await TaskRepository.delete_task(tasks_id)
+        return {
+            'status': 'success',
+            'data': result,
+            'details': None
+        }
+
+    except Exception:
+        raise HTTPException(status_code=400, detail={
+            "status": 'not tasks',
             'data': None,
             'details': None,
         })
